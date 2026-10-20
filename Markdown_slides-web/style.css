@@ -71,7 +71,6 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .preview-pane { align-items: stretch; }
 
-/* Slide */
 .slide-frame {
   container-type: inline-size;
   width: 100%;
@@ -123,7 +122,6 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
 .slide img { max-width: 100%; max-height: 60%; }
 .slide a { color: #2563eb; }
 
-/* Controls */
 .controls {
   display: flex;
   align-items: center;
@@ -133,7 +131,6 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
 }
 .counter { min-width: 70px; text-align: center; font-size: 15px; }
 
-/* Presentation */
 .presentation {
   position: fixed;
   inset: 0;
