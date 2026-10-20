@@ -45,8 +45,6 @@
   var presenting = false;
   var statusTimer = null;
 
-  /* ---------- Markdown to HTML (small built-in parser) ---------- */
-
   function escapeHtml(s) {
     return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
@@ -80,7 +78,6 @@
 
       if (/^\s*$/.test(line)) { i++; continue; }
 
-      // fenced code block
       if (/^```/.test(line)) {
         var code = [];
         i++;
@@ -90,7 +87,6 @@
         continue;
       }
 
-      // heading
       var h = line.match(/^(#{1,6})\s+(.*)$/);
       if (h) {
         out.push("<h" + h[1].length + ">" + inline(h[2].trim()) + "</h" + h[1].length + ">");
@@ -98,15 +94,7 @@
         continue;
       }
 
-      // blockquote
-      if (/^>\s?/.test(line)) {
-        var q = [];
-        while (i < lines.length && /^>\s?/.test(lines[i])) { q.push(lines[i].replace(/^>\s?/, "")); i++; }
-        out.push("<blockquote>" + inline(q.join(" ")) + "</blockquote>");
-        continue;
-      }
-
-      // unordered list
+    
       if (/^\s*[-*+]\s+/.test(line)) {
         var ul = [];
         while (i < lines.length && /^\s*[-*+]\s+/.test(lines[i])) {
@@ -117,7 +105,7 @@
         continue;
       }
 
-      // ordered list
+
       if (/^\s*\d+[.)]\s+/.test(line)) {
         var ol = [];
         while (i < lines.length && /^\s*\d+[.)]\s+/.test(lines[i])) {
@@ -128,7 +116,7 @@
         continue;
       }
 
-      // paragraph
+
       var p = [];
       while (
         i < lines.length &&
@@ -143,8 +131,6 @@
 
     return out.join("\n");
   }
-
-  /* ---------- Slides ---------- */
 
   function splitSlides(md) {
     var parts = md.replace(/\r\n?/g, "\n").split(/^[ \t]*---[ \t]*$/m);
@@ -183,8 +169,6 @@
     render();
   }
 
-  /* ---------- Save / load ---------- */
-
   function showStatus(msg) {
     statusEl.textContent = msg;
     clearTimeout(statusTimer);
@@ -208,8 +192,6 @@
       return DEFAULT_MD;
     }
   }
-
-  /* ---------- Presentation mode ---------- */
 
   function enterPresentation() {
     if (presenting) return;
@@ -248,11 +230,8 @@
     }
   });
 
-  /* ---------- Events ---------- */
-
   editor.addEventListener("input", render);
 
-  // allow Tab inside the editor
   editor.addEventListener("keydown", function (e) {
     if (e.key === "Tab") {
       e.preventDefault();
@@ -291,15 +270,12 @@
       togglePresentation();
       return;
     }
-
-    // keep arrow keys for the cursor while typing in the editor
     if (document.activeElement === editor && !presenting) return;
 
     if (key === "ArrowRight") { e.preventDefault(); go(1); }
     else if (key === "ArrowLeft") { e.preventDefault(); go(-1); }
   });
 
-  /* ---------- Start ---------- */
 
   editor.value = load();
   render();
